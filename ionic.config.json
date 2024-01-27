@@ -1,0 +1,8 @@
+{
+  "name": "Seller",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "07166a22"
+}
