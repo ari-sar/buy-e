@@ -1,0 +1,61 @@
+<!-- Global header -->
+<app-my-header></app-my-header>
+<ion-content class="ion-padding">
+  <ion-item lines="none" style="--background: rgb(248, 248, 248)">
+    <ion-icon name="star-outline"></ion-icon>
+    <ion-text class="text-xl ml-2">My Wishlist</ion-text>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="8">
+        <ion-card
+          class="shadow-none"
+          *ngFor="let course of courses; let i = index"
+        >
+          <ion-card-content class="relative">
+            <ion-item lines="none">
+              <ion-text class="font-semibold">{{ course.courseName }}</ion-text>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-text
+                *ngIf="course.discountPercentage !== '0'"
+                color="medium"
+                class="font-bold ml-2 text-sm line-through"
+              >
+                {{ course.actualPrice }}
+              </ion-text>
+              <ion-text color="primary" class="font-bold ml-2"
+                >₹{{
+                  calculatePrice(course.actualPrice, course.discountPercentage)
+                }}
+              </ion-text>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-button
+                (click)="delete(course, i)"
+                color="danger"
+                fill="outline"
+              >
+                <ion-text class="px-3 py-2">Delete</ion-text>
+              </ion-button>
+              <ion-button
+                (click)="addToCart(course, i)"
+                class="ml-2"
+                color="primary"
+              >
+                <ion-text class="px-3 py-2">Add to Cart</ion-text>
+              </ion-button>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col
+        size="12"
+        size-md="4"
+        class="hidden md:flex md:justify-center md:items-center"
+      >
+        <ion-img class="w-[60%]" src="../../../assets/angular.png"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

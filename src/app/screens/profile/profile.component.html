@@ -1,0 +1,190 @@
+<!-- Global Header  -->
+<app-my-header></app-my-header>
+<ion-content class="ion-padding">
+  <ion-item color="gray" lines="none">
+    <ion-icon name="person-outline"></ion-icon>
+    <ion-text class="ml-2">My Profile</ion-text>
+  </ion-item>
+  <ion-grid class="md:p-12">
+    <ion-row>
+      <ion-col size="12" size-md="5">
+        <div class="flex justify-center relative mt-8 md:mt-0">
+          <ion-img
+            class="w-[150px] shadow-lg md:shadow-none md:w-[300px] h-[150px] md:h-[300px] rounded-full relative z-20"
+            src="../../../assets/user.png"
+          ></ion-img>
+
+          <svg
+            class="opacity-0 md:opacity-100 w-[400px] absolute top-[-60px] z-10"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M68.5,62Q58,74,41.5,71Q25,68,26.5,51Q28,34,44,26Q60,18,69.5,34Q79,50,68.5,62Z"
+              stroke="none"
+              stroke-width="0"
+              fill="#fff387"
+            ></path>
+          </svg>
+        </div>
+      </ion-col>
+
+      <ion-col size="12" size-md="7">
+        <ion-item class="hidden md:block" color="gray" lines="none">
+          <div class="flex justify-center w-full">
+            <ion-text class="text-2xl font-semibold mb-4">
+              Update your profile
+            </ion-text>
+          </div>
+        </ion-item>
+        <form
+          class="md:mx-[20%] shadow-none md:shadow-lg p-4 rounded-md"
+          [formGroup]="userForm"
+          (ngSubmit)="onSubmit()"
+        >
+          <div class="mt-4">
+            <label class="text-gray-600" for="displayName"
+              >Display Name *</label
+            >
+            <input
+              class="w-full h-full outline-none bg-white border-[1px] rounded-md p-4 mt-2"
+              type="text"
+              id="displayName"
+              formControlName="displayName"
+              required
+            />
+            <div
+              class="text-sm text-red-500"
+              *ngIf="
+                userForm.get('displayName')?.invalid &&
+                userForm.get('displayName')?.touched
+              "
+            >
+              Display Name is required
+            </div>
+          </div>
+          <div class="mt-4">
+            <label class="text-gray-600" for="firstName">First Name *</label>
+            <input
+              class="w-full h-full outline-none bg-white border-[1px] rounded-md p-4 mt-2"
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              required
+            />
+            <div
+              class="text-sm text-red-500"
+              *ngIf="
+                userForm.get('firstName')?.invalid &&
+                userForm.get('firstName')?.touched
+              "
+            >
+              First Name is required
+            </div>
+          </div>
+          <div class="mt-4">
+            <label class="text-gray-600" for="lastName">Last Name</label>
+            <input
+              class="w-full h-full outline-none bg-white border-[1px] rounded-md p-4 mt-2"
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+            />
+          </div>
+          <div class="mt-4">
+            <label class="text-gray-600" for="aboutYourself"
+              >About Yourself (Max 100 characters)</label
+            >
+            <textarea
+              id="aboutYourself"
+              formControlName="aboutYourself"
+              maxlength="100"
+              class="w-full h-[40%] mt-2"
+            ></textarea>
+          </div>
+          <div class="mt-4">
+            <label class="text-gray-600" for="areaOfInterest"
+              >Your Area of Interest</label
+            >
+            <select
+              class="w-full h-full outline-none bg-white border-[1px] rounded-md p-4 mt-2"
+              id="areaOfInterest"
+              formControlName="areaOfInterest"
+            >
+              <option value="" disabled selected>Select your option</option>
+              <option value="Frontend">Frontend</option>
+              <option value="Backend">Backend</option>
+              <option value="Full Stack">Full Stack</option>
+              <option value="Mobile Development">Mobile Development</option>
+            </select>
+          </div>
+          <div class="mt-4">
+            <label class="text-gray-600" for="studentOrProfessional"
+              >Are you a student or a professional?</label
+            >
+            <select
+              class="w-full h-full outline-none bg-white border-[1px] rounded-md p-4 mt-2"
+              id="studentOrProfessional"
+              formControlName="studentOrProfessional"
+            >
+              <option value="" disabled selected>Select your option</option>
+              <option value="Student">Student</option>
+              <option value="Professional">Professional</option>
+            </select>
+          </div>
+          <div
+            class="mt-4"
+            *ngIf="
+              userForm.get('studentOrProfessional')?.value === 'Professional'
+            "
+          >
+            <label class="text-gray-600" for="experience">Experience</label>
+            <select
+              class="w-full h-full outline-none bg-white border-[1px] rounded-md p-4 mt-2"
+              id="experience"
+              formControlName="experience"
+            >
+              <option value="" disabled selected>Select your option</option>
+              <option value="0-5">0-5 years</option>
+              <option value="5-10">5-10 years</option>
+              <option value="10 & above">10 & above years</option>
+            </select>
+          </div>
+          <div
+            class="mt-4"
+            *ngIf="
+              userForm.get('studentOrProfessional')?.value === 'Professional'
+            "
+          >
+            <label class="text-gray-600" for="experience">Expertise</label>
+            <select
+              class="w-full h-full outline-none bg-white border-[1px] rounded-md p-4 mt-2"
+              id="expertise"
+              formControlName="expertise"
+            >
+              <option value="" disabled selected>Select your option</option>
+              <option value="IonicAngular">Ionic, Angular</option>
+              <option value="IonicReact">Ionic, React</option>
+              <option value="ReactNativeReact">React Native, React</option>
+              <option value="Flutter">Flutter</option>
+            </select>
+          </div>
+          <div class="mt-4">
+            <label class="text-gray-600" for="role"
+              >Mention your role (Max 200 characters)</label
+            >
+            <textarea
+              id="role"
+              formControlName="role"
+              maxlength="200"
+              class="w-full h-[80%] mt-2"
+            ></textarea>
+          </div>
+          <ion-button expand="full" type="submit" [disabled]="userForm.invalid"
+            >Submit</ion-button
+          >
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

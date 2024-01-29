@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true">
+  <div class="w-full h-full flex justify-center items-center">
+    <ion-grid>
+      <ion-row class="ion-align-items-start">
+        <ion-col
+          size="12"
+          size-md="6"
+          class="md:h-[300px] flex items-center justify-center"
+        >
+          <ion-img class="h-[80px]" src="../../assets//logo/buye.png"></ion-img>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-card class="md:w-[400px]">
+            <ion-card-header>
+              <ion-item lines="none">
+                <ion-card-title class="w-full text-center text-2xl"
+                  >User Login</ion-card-title
+                >
+              </ion-item>
+            </ion-card-header>
+
+            <ion-card-content>
+              <ion-item lines="none">
+                <ion-label>Enter Password</ion-label>
+                <input
+                  type="password"
+                  class="border-[1px] rounded-md p-4 w-full"
+                  placeholder="Enter password to continue"
+                  [(ngModel)]="password"
+                />
+              </ion-item>
+              <ion-button (click)="signIn()" expand="full" class="mt-8">
+                Sign in
+                <ion-icon slot="end" name="log-in-outline"></ion-icon>
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

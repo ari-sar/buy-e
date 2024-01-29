@@ -1,0 +1,75 @@
+<!-- Global header -->
+<app-my-header></app-my-header>
+<ion-content class="ion-padding">
+  <ion-item lines="none" style="--background: rgb(248, 248, 248)">
+    <ion-icon name="cart-outline"></ion-icon>
+    <ion-text class="text-xl ml-2">My Cart</ion-text>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="8">
+        <ion-card
+          class="shadow-none"
+          *ngFor="let course of courses; let i = index"
+        >
+          <ion-card-content class="relative">
+            <ion-item lines="none">
+              <ion-text class="font-semibold">{{ course.courseName }}</ion-text>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-text
+                *ngIf="course.discountPercentage !== '0'"
+                color="medium"
+                class="font-bold ml-2 text-sm line-through"
+              >
+                {{ course.actualPrice }}
+              </ion-text>
+              <ion-text color="primary" class="font-bold ml-2"
+                >₹{{
+                  calculatePrice(course.actualPrice, course.discountPercentage)
+                }}
+              </ion-text>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-button
+                (click)="addToFavorites(course, i)"
+                color="dark"
+                fill="clear"
+                >Move to wishlist</ion-button
+              >
+              <ion-button
+                (click)="delete(course, i)"
+                color="danger"
+                fill="clear"
+                >Delete</ion-button
+              >
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-md="4">
+        <ion-card class="shadow-none">
+          <ion-item>
+            <ion-text>Total Courses: </ion-text>
+            <ion-text class="font-bold ml-2">{{ courses.length }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-text>Price: </ion-text>
+            <ion-text class="font-bold text-xl ml-2" color="dark"
+              >₹{{ discountedPrice }}</ion-text
+            >
+          </ion-item>
+          <ion-item lines="none">
+            <ion-text>You saved: </ion-text>
+            <ion-text color="success" class="font-bold ml-2"
+              >₹{{ (price - discountedPrice).toFixed(2) }}</ion-text
+            >
+          </ion-item>
+          <ion-button (click)="checkout()" expand="full" color="primary">
+            Checkout
+          </ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

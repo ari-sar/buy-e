@@ -1,0 +1,60 @@
+<ion-menu side="end" *ngIf="isMobile" contentId="main-content">
+  <ion-header>
+    <ion-item color="gray" lines="none">
+      <ion-icon slot="start" name="close-outline"></ion-icon>
+      <ion-text>Menu</ion-text>
+    </ion-item>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-item
+      lines="none"
+      color="gray"
+      (click)="goTo(page.url)"
+      *ngFor="let page of appPages"
+    >
+      <ion-icon [name]="page.icon"></ion-icon>
+      <ion-text class="ml-2">{{ page.title }}</ion-text>
+    </ion-item>
+  </ion-content>
+</ion-menu>
+
+
+<ion-header class="ion-padding-horizontal hidden lg:block">
+  <div class="flex justify-between items-center">
+    <div>
+      <ion-item class="cursor-pointer" lines="none">
+        <ion-img
+          class="h-[80px]"
+          [routerLink]="'/screens'"
+          src="../assets/logo/buye.png"
+        ></ion-img>
+      </ion-item>
+    </div>
+    <div class="flex">
+      <ion-item
+        lines="none"
+        (click)="goTo(page.url)"
+        *ngFor="let page of appPages"
+      >
+        <ion-text
+          class="ml-2 cursor-pointer ion-text-uppercase font-normal tracking-wide"
+          >{{ page.title }}</ion-text
+        >
+      </ion-item>
+    </div>
+  </div>
+</ion-header>
+
+<ion-header class="block lg:hidden">
+  <ion-item lines="none">
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img
+      slot="start"
+      [routerLink]="'/screens'"
+      class="h-[40px]"
+      src="../assets/logo/buye.png"
+    ></ion-img>
+  </ion-item>
+</ion-header>

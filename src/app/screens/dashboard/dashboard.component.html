@@ -1,0 +1,376 @@
+<!-- Global header -->
+<app-my-header></app-my-header>
+<ion-content class="ion-padding">
+  <!-- Banner -->
+  <div class="flex md:justify-between md:mx-32">
+    <ion-card class="w-[100%] mt-10 md:shadow-none">
+      <ion-card-content class="relative p-10">
+        <div class="flex justify-between">
+          <div>
+            <div class="z-50 relative">
+              <ion-text
+                color="dark"
+                class="block font-bold text-[20px] md:text-[35px]"
+              >
+                Discover
+              </ion-text>
+              <ion-text
+                color="dark"
+                class="font-bold text-[15px] md:text-[30px]"
+              >
+                Latest Courses on Angular
+              </ion-text>
+            </div>
+            <div class="mt-4 z-50">
+              <ion-text color="dark" class="text-xs md:text-base font-medium">
+                Featuring: Alex Johnson,Emily White and Chris Turner
+              </ion-text>
+            </div>
+            <svg
+              class="absolute top-[-120%] right-[-20%] md:top-[-105%] rotate-12 md:right-0 w-80 z-0"
+              viewBox="0 0 100 100"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M78,61Q80,72,68.5,72Q57,72,46,84.5Q35,97,27.5,84.5Q20,72,20.5,61Q21,50,23,41Q25,32,31,21Q37,10,49.5,12Q62,14,69.5,22Q77,30,76.5,40Q76,50,78,61Z"
+                stroke="none"
+                stroke-width="0"
+                fill="#d2ff88"
+              ></path>
+            </svg>
+            <svg
+              class="absolute bottom-[-120%] left-[-10%] md:bottom-[-105%] md:left-0 w-80 rotate-[60deg] z-10"
+              viewBox="0 0 100 100"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M74.5,64.5Q73,79,56.5,86.5Q40,94,24,82Q8,70,17.5,54.5Q27,39,33.5,23Q40,7,59,11Q78,15,77,32.5Q76,50,74.5,64.5Z"
+                stroke="none"
+                stroke-width="0"
+                fill="#fff387"
+              ></path>
+            </svg>
+          </div>
+          <div class="hidden lg:flex lg:justify-end">
+            <ion-img class="w-[22%]" src="../../../assets/angular.png" />
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Courses -->
+  <div class="px-4 mt-8 flex items-center justify-between">
+    <ion-text color="medium" class="text-2xl tracking-wide">
+      Our Courses
+    </ion-text>
+    <ion-icon
+      (click)="isFilterOpen = !isFilterOpen"
+      class="text-2xl cursor-pointer"
+      name="filter-outline"
+      id="click-trigger"
+    ></ion-icon>
+  </div>
+
+  <!-- sort filter popover -->
+  <ion-popover
+    trigger="click-trigger"
+    [isOpen]="isFilterOpen"
+    (didDismiss)="isFilterOpen = false"
+  >
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-item lines="none">
+          <ion-text color="medium" class="font-semibold text-center w-full"
+            >Sort by</ion-text
+          >
+        </ion-item>
+        <ion-item (click)="sortByLowestPrice()">
+          <ion-text class="text-center w-full cursor-pointer">Lowest</ion-text>
+        </ion-item>
+        <ion-item (click)="sortByHighestPrice()">
+          <ion-text class="text-center w-full cursor-pointer">Highest</ion-text>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+
+  <!-- search bar -->
+  <div class="mt-4 md:flex md:justify-end">
+    <div
+      class="md:w-[400px] flex mx-4 bg-white items-center border-[1px] rounded-md p-4"
+    >
+      <ion-icon color="medium" class="text-2xl" name="search"></ion-icon>
+      <input
+        type="text"
+        class="w-full h-full outline-none bg-white ml-2"
+        placeholder="Search by course title/author/tags"
+        (input)="search($event)"
+      />
+    </div>
+  </div>
+
+  <!-- course list -->
+  <div *ngIf="renderedCourses.length > 0" class="px-2">
+    <ion-grid>
+      <ion-row>
+        <ion-col
+          size="12"
+          size-md="4"
+          *ngFor="let course of renderedCourses; let i = index"
+        >
+          <ion-card class="p-4">
+            <ion-card-content class="relative">
+              <ion-icon
+                *ngIf="!course.isAddedToCart && !course.hasBeenBrought"
+                class="absolute top-0 right-0 text-2xl cursor-pointer"
+                name="star"
+                [color]="course.isAddedToFavorite ? 'warning' : 'medium'"
+                (click)="addToFavorites(course)"
+              ></ion-icon>
+              <ion-text color="dark" class="text-base font-semibold">{{
+                course.courseName
+              }}</ion-text>
+              <ion-text class="block text-xs">
+                by {{ course.author }}
+              </ion-text>
+              <div class="mt-4">
+                <ion-text
+                  [ngClass]="
+                    course.discountPercentage !== '0'
+                      ? 'line-through text-base'
+                      : 'text-lg'
+                  "
+                  [color]="
+                    course.discountPercentage !== '0' ? 'medium' : 'primary'
+                  "
+                  class="font-bold"
+                >
+                  {{ course.actualPrice }}
+                </ion-text>
+                <ion-text
+                  *ngIf="course.discountPercentage !== '0'"
+                  color="primary"
+                  class="font-bold text-lg ml-2"
+                >
+                  ₹{{
+                    calculatePrice(
+                      course.actualPrice,
+                      course.discountPercentage
+                    )
+                  }}
+                </ion-text>
+              </div>
+              <div class="flex justify-end mt-6">
+                <div
+                  *ngIf="!course.hasBeenBrought"
+                  (click)="addToCart(course)"
+                  class="flex items-center text-white px-3 py-2 rounded-lg cursor-pointer"
+                  [ngClass]="
+                    course.isAddedToCart
+                      ? 'bg-[var(--ion-color-dark)]'
+                      : 'bg-[var(--ion-color-primary)]'
+                  "
+                >
+                  <ion-icon
+                    class="text-2xl mr-2"
+                    name="cart-outline"
+                  ></ion-icon>
+                  <ion-text>Add to cart</ion-text>
+                </div>
+                <div
+                  *ngIf="course.hasBeenBrought"
+                  class="flex items-center text-black px-3 py-2 rounded-lg cursor-pointer"
+                  ngClass="var(--ion-color-light)"
+                >
+                  <ion-icon
+                    class="text-2xl mr-2"
+                    name="checkmark-circle-outline"
+                    color="success"
+                  ></ion-icon>
+                  <ion-text>Already Bought</ion-text>
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-4">
+                <ion-icon
+                  (click)="course.isExpanded = !course.isExpanded"
+                  *ngIf="!course.isExpanded"
+                  class="text-[22px] cursor-pointer"
+                  name="chevron-down-outline"
+                ></ion-icon>
+                <ion-icon
+                  (click)="course.isExpanded = !course.isExpanded"
+                  *ngIf="course.isExpanded"
+                  name="chevron-up-outline"
+                  class="text-[22px] cursor-pointer"
+                ></ion-icon>
+              </div>
+
+              <div *ngIf="course.isExpanded" class="mt-4 flex flex-wrap">
+                <ion-text
+                  class="text-[13px] text-black border-[1px] px-3 py-2 rounded-3xl mr-2 mb-2"
+                  *ngFor="let tag of course.tags"
+                >
+                  {{ tag }}
+                </ion-text>
+
+                <ion-text
+                  color="primary"
+                  class="w-full font-semibold text-center flex justify-center items-center mt-4 border-y-[1px] py-2 cursor-pointer text-lg"
+                  (click)="onCourseSelect(course)"
+                >
+                  More
+                  <ion-icon
+                    class="ml-4"
+                    name="arrow-forward-outline"
+                  ></ion-icon>
+                </ion-text>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div
+    *ngIf="renderedCourses.length === 0"
+    class="flex justify-center items-center"
+  >
+    <ion-text class="p-4">Sorry! no Courses found</ion-text>
+  </div>
+
+  <!-- cart fab button -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button id="fab-trigger" class="relative">
+      <ion-icon name="cart"></ion-icon>
+    </ion-fab-button>
+    <ion-popover
+      trigger="fab-trigger"
+      [isOpen]="isCartOpen"
+      (didDismiss)="isCartOpen = false"
+    >
+      <ng-template>
+        <ion-content class="ion-padding">
+          <ion-item lines="none">
+            <ion-text color="medium" class="font-semibold text-center w-full"
+              >Cart Details</ion-text
+            >
+          </ion-item>
+          <ion-item>
+            <ion-text class="text-xs">Total Courses:</ion-text>
+            <ion-text class="ml-1 text-sm font-semibold">{{
+              cartItems.length
+            }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-text class="text-xs">Total Price:</ion-text>
+            <ion-text class="ml-1 text-sm font-semibold">{{
+              calculateTotalPrice(cartItems)
+            }}</ion-text>
+          </ion-item>
+          <ion-item class="cursor-pointer" (click)="goToCart()">
+            <div
+              class="flex items-center justify-between font-bold text-[var(--ion-color-primary)]"
+            >
+              <ion-text class="text-center w-full">CHECKOUT</ion-text>
+              <ion-icon class="text-lg ml-2" name="cart-outline"></ion-icon>
+            </div>
+          </ion-item>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+    <ion-badge
+      *ngIf="cartItems.length > 0"
+      color="danger"
+      class="absolute top-[0px] right-[50%] rounded-full"
+    >
+      {{ cartItems.length }}
+    </ion-badge>
+  </ion-fab>
+
+  <!-- course details modal -->
+  <!-- <ion-modal class="w-full h-full" [isOpen]="isCourseDetailsModalOpen">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-item lines="none">
+          <ion-text class="text-2xl font-semibold">{{
+            selectedCourse.courseName
+          }}</ion-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-text>Author: </ion-text>
+          <ion-text class="text-lg ml-2 font-medium">{{
+            selectedCourse.author
+          }}</ion-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-text>Price: </ion-text>
+          <ion-text
+            class="font-bold ml-2"
+            [color]="
+              selectedCourse.discountPercentage !== '0' ? 'dark' : 'primary'
+            "
+          >
+            {{ selectedCourse.actualPrice }}</ion-text
+          >
+        </ion-item>
+        <ion-item
+          lines="none"
+          *ngIf="selectedCourse.discountPercentage !== '0'"
+        >
+          <ion-text>Discount: </ion-text>
+          <ion-text color="success" class="ml-2 font-semibold">{{
+            selectedCourse.discountPercentage
+          }}</ion-text>
+        </ion-item>
+        <ion-item
+          lines="none"
+          *ngIf="selectedCourse.discountPercentage !== '0'"
+        >
+          <ion-text>Discounted Price: </ion-text>
+          <ion-text color="primary ml-2" class="font-bold text-lg ml-2"
+            >{{
+              calculatePrice(
+                selectedCourse.actualPrice,
+                selectedCourse.discountPercentage
+              )
+            }}
+          </ion-text>
+        </ion-item>
+        <ion-item lines="none">
+          <div>
+            <ion-text
+              class="bg-slate-300 px-3 py-2 mr-2 rounded"
+              *ngFor="let tag of selectedCourse.tags"
+              >{{ tag }}</ion-text
+            >
+          </div>
+        </ion-item>
+      </ion-content>
+      <ion-footer [translucent]="true" class="ion-no-border">
+        <ion-toolbar>
+          <ion-button
+            (click)="isCourseDetailsModalOpen = !isCourseDetailsModalOpen"
+            slot="end"
+            color="dark"
+            >Close</ion-button
+          >
+        </ion-toolbar>
+      </ion-footer>
+    </ng-template>
+  </ion-modal> -->
+
+  <!--! For lazy loading -->
+  <ion-infinite-scroll
+    [disabled]="isIonScrollDisabled"
+    (ionInfinite)="onIonInfinite($event)"
+  >
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-progress-bar
+    *ngIf="renderedCourses.length > 0 && !this.isIonScrollDisabled"
+    type="indeterminate"
+  ></ion-progress-bar>
+</ion-content>

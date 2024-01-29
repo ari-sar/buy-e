@@ -1,0 +1,145 @@
+<!-- Global header -->
+<app-my-header></app-my-header>
+<ion-content>
+  <ion-breadcrumbs class="opacity-0 md:opacity-100 md:mt-4">
+    <ion-breadcrumb [routerLink]="'/screens'">All Courses</ion-breadcrumb>
+    <ion-breadcrumb>{{ course?.courseName }}</ion-breadcrumb>
+  </ion-breadcrumbs>
+
+  <ion-grid class="md:mt-6 md:mx-12">
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item lines="none">
+          <ion-text class="text-2xl font-semibold">{{
+            course?.courseName
+          }}</ion-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-text>Author: </ion-text>
+          <ion-text class="text-lg ml-2 font-medium">{{
+            course?.author
+          }}</ion-text>
+        </ion-item>
+        <ion-item lines="none">
+          <div>
+            <ion-text
+              class="bg-slate-300 px-3 py-2 mr-2 rounded"
+              *ngFor="let tag of course?.tags"
+              >{{ tag }}</ion-text
+            >
+          </div>
+        </ion-item>
+        <div *ngIf="course?.discountPercentage !== '0'">
+          <ion-item lines="none">
+            <ion-text color="dark" slot="start">Sale ends in</ion-text>
+            <ion-text class="font-medium" color="danger">{{
+              timeLeftUntilMidnight()
+            }}</ion-text>
+          </ion-item>
+        </div>
+        <ion-item lines="none">
+          <ion-text color="medium">Description</ion-text>
+          <ion-text class="mt-2"
+            >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et quia
+            debitis neque voluptatem, eaque obcaecati eligendi ad error
+            deleniti, doloremque veritatis. In, dolores eum recusandae cumque
+            quis aliquam ad maiores!</ion-text
+          >
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-card class="md:shadow-none">
+          <ion-card-content>
+            <ion-card class="shadow-none md:shadow" *ngIf="!isVideoPlaying">
+              <ion-card-content>
+                <div
+                  (click)="toggleVideoPlayer()"
+                  class="cursor-pointer relative"
+                >
+                  <ion-img
+                    src="http://img.youtube.com/vi/Ata9cSC2WpM/hqdefault.jpg"
+                  />
+                  <ion-icon
+                    style="transform: translate(-50%, -50%)"
+                    class="text-[80px] text-black absolute z-10 top-[50%] left-[50%]"
+                    name="play-circle-outline"
+                  ></ion-icon>
+                </div>
+              </ion-card-content>
+            </ion-card>
+            <div
+              *ngIf="isVideoPlaying"
+              class="mt-8 h-[40vh] md:h-[60vh] cursor-pointer"
+            >
+              <iframe
+                width="100%"
+                height="100%"
+                [src]="byPassUrl()"
+                frameborder="0"
+                allowfullscreen
+                allowtransparency="true"
+              ></iframe>
+            </div>
+            <!-- <div
+              *ngIf="isVideoPlaying"
+              (click)="toggleVideoPlayer()"
+              class="flex justify-center"
+            >
+              <ion-button color="dark">
+                <ion-icon name="stop"></ion-icon>
+              </ion-button>
+            </div> -->
+            <div class="mt-4 flex justify-evenly">
+              <div class="flex flex-col justify-center items-center">
+                <ion-text>Price</ion-text>
+                <ion-text
+                  class="font-bold text-lg ml-2"
+                  [color]="
+                    course?.discountPercentage !== '0' ? 'dark' : 'primary'
+                  "
+                >
+                  {{ course?.actualPrice }}</ion-text
+                >
+              </div>
+              <div
+                *ngIf="course?.discountPercentage !== '0'"
+                class="flex flex-col justify-center items-center"
+              >
+                <ion-text>Discount </ion-text>
+                <ion-text color="success" class="ml-2 font-bold text-lg">{{
+                  course?.discountPercentage
+                }}</ion-text>
+              </div>
+              <div
+                *ngIf="course?.discountPercentage !== '0'"
+                class="flex flex-col justify-center items-center"
+              >
+                <ion-text>Final Price </ion-text>
+                <ion-text color="primary ml-2" class="font-bold text-lg ml-2"
+                  >₹{{
+                    calculatePrice(
+                      course?.actualPrice,
+                      course?.discountPercentage
+                    )
+                  }}
+                </ion-text>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-evenly">
+              <ion-button>
+                <!-- <ion-icon name="cart-outline"></ion-icon> -->
+                <ion-text class="pr-1">Cart</ion-text>
+                <ion-icon name="add-outline"></ion-icon>
+              </ion-button>
+              <ion-button color="warning">
+                <!-- <ion-icon name="star-outline"></ion-icon> -->
+                <ion-text class="pr-1">Wishlist</ion-text>
+                <ion-icon name="add-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
