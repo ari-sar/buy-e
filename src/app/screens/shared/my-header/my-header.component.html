@@ -18,7 +18,6 @@
   </ion-content>
 </ion-menu>
 
-
 <ion-header class="ion-padding-horizontal hidden lg:block">
   <div class="flex justify-between items-center">
     <div>
@@ -32,6 +31,7 @@
     </div>
     <div class="flex">
       <ion-item
+        class="md:text-sm"
         lines="none"
         (click)="goTo(page.url)"
         *ngFor="let page of appPages"

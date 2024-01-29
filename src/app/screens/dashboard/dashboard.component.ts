@@ -32,6 +32,9 @@ export class DashboardComponent implements OnInit {
   }
 
   async ngOnInit() {
+    if (this.isIonScrollDisabled) {
+      this.isIonScrollDisabled = false
+    }
     const data = JSON.parse(JSON.stringify(await this.providerService.getCourses()))
     data.map((course: any) => {
       course.isExpanded = false;
@@ -169,7 +172,7 @@ export class DashboardComponent implements OnInit {
     localStorage.setItem('selectedCourse', JSON.stringify(course));
     this.router.navigateByUrl('/screens/course-details')
   }
-  goToCart(){
+  goToCart() {
     this.isCartOpen = false;
     this.router.navigateByUrl('/screens/cart')
   }
