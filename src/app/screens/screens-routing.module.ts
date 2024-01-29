@@ -9,7 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/screens/home',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {

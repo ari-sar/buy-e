@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,10 @@ export class LoginPage {
   password: string = '';
   constructor(
     private toastController: ToastController,
-    private router: Router
-  ) { 
-    if(localStorage.getItem('hasLoggedIn')){
+    private router: Router,
+    private authService: AuthService
+  ) {
+    if (localStorage.getItem('hasLoggedIn')) {
       router.navigateByUrl('/screens')
     }
   }
@@ -21,9 +23,10 @@ export class LoginPage {
 
   signIn() {
     if (this.password === 'dummy@123') {
+      this.authService.login();
       this.presentToast('Login Success', 'success');
       localStorage.setItem('hasLoggedIn', 'true');
-      this.router.navigateByUrl('/screens')
+      this.router.navigateByUrl('screens')
     } else if (this.password === '') {
       this.presentToast('Password is empty', 'warning')
     } else {
