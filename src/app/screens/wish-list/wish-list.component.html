@@ -58,4 +58,8 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div class="ml-12" *ngIf="courses.length === 0">
+    <ion-text> Nothing in the Wish List. Please add some courses </ion-text>
+  </div>
 </ion-content>

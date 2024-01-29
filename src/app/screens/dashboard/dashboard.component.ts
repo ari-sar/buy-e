@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
     private providerService: ProviderService,
     private router: Router
   ) {
+    //? Refresh data on every navigation end
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
         this.ngOnInit();
@@ -104,7 +105,6 @@ export class DashboardComponent implements OnInit {
     } else {
       this.isIonScrollDisabled = true;
     }
-    // console.log(this.courses, this.isIonScrollDisabled);
     (ev as InfiniteScrollCustomEvent).target.complete();
   }
 
@@ -137,7 +137,6 @@ export class DashboardComponent implements OnInit {
         this.courses = res;
         this.renderedCourses = this.courses.splice(0, 4);
       })
-      console.log(this.isIonScrollDisabled)
     }
   }
 
@@ -169,7 +168,6 @@ export class DashboardComponent implements OnInit {
     this.selectedCourse = course;
     localStorage.setItem('selectedCourse', JSON.stringify(course));
     this.router.navigateByUrl('/screens/course-details')
-    // console.log(course);
   }
   goToCart(){
     this.isCartOpen = false;
